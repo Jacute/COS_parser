@@ -48,6 +48,7 @@ class Parser:
                 options.add_argument('--headless')
                 options.add_argument('--disable-gpu')
 
+            options.add_argument('--log-level=3')
             options.add_argument("--disable-blink-features=AutomationControlled")
             options.add_experimental_option("excludeSwitches", ["enable-automation"])
             options.add_experimental_option('useAutomationExtension', False)
@@ -111,16 +112,17 @@ class Parser:
                     if word.lower().startswith(i):
                         material.append(self.MATERIALS[i])
                         break
-            material = ';'.join(material)
+            material = ';'.join(list(set(material)))
 
             self.driver.find_element(By.CLASS_NAME, 'a-link.details').click()
             time.sleep(TIMEOUT)
-            self.driver.find_element(By.CLASS_NAME, 'a-link.open-lightbox.size-guide').click()
-            time.sleep(TIMEOUT)
-            creator = self.driver.find_element(By.CLASS_NAME, 'country-name-value').text
-            self.driver.find_element(By.CLASS_NAME, 'a-button-nostyle.m-button-icon').click()
-            if creator == '':
-                print(self.driver.current_url)
+            try:
+                self.driver.find_element(By.CLASS_NAME, 'a-link.open-lightbox.size-guide').click()
+                time.sleep(TIMEOUT)
+                creator = self.translate(self.driver.find_element(By.CLASS_NAME, 'country-name-value').text)
+                self.driver.find_element(By.CLASS_NAME, 'a-button-nostyle.m-button-icon').click()
+            except:
+                creator = 'Турция'
 
             eur_price = self.driver.find_element(By.CLASS_NAME, 'price').text.replace('€', '').replace(',', '.').strip()
             price = self.get_price(eur_price)
@@ -153,26 +155,67 @@ class Parser:
                 for i in self.translate(description).split('\n'):
                     text += i + '","'
                 rich = self.RICH.format(name, text, article_num)
-
-                self.COLUMNS['№'] = c
-                self.COLUMNS['Артикул*'] = article
-                self.COLUMNS['Название товара'] = name
-                self.COLUMNS['Цена, руб.*'] = price
-                self.COLUMNS['Ссылка на главное фото*'] = main_photo
-                self.COLUMNS['Ссылки на дополнительные фото'] = other_photo
-                self.COLUMNS['Объединить на одной карточке*'] = article_num[:-3]
-                self.COLUMNS['Цвет товара*'] = self.COLORS[color] if color in self.COLORS.keys() else 'разноцветный'
-                self.COLUMNS['Название цвета'] = color
-                self.COLUMNS['Материал'] = material
-                self.COLUMNS['Состав материала'] = material
-                self.COLUMNS['Таблица размеров JSON'] = self.TABLE_OF_SIZES
-                self.COLUMNS['Rich-контент JSON'] = rich
-                try:
-                    self.COLUMNS['Российский размер*'] = self.SIZES[size.upper()]
-                except:
-                    self.COLUMNS['Российский размер*'] = 'Bad size'  # Если размера нету в таблице размеров
-                self.COLUMNS['Размер производителя'] = size
-                self.COLUMNS["Страна-изготовитель"] = self.translate(creator)
+                if self.settings[CATEGORIE]['type_pars'] == 'clothes':
+                    self.COLUMNS['№'] = c
+                    self.COLUMNS['Артикул*'] = article
+                    self.COLUMNS['Название товара'] = name
+                    self.COLUMNS['Цена, руб.*'] = price
+                    self.COLUMNS['Ссылка на главное фото*'] = main_photo
+                    self.COLUMNS['Ссылки на дополнительные фото'] = other_photo
+                    self.COLUMNS['Объединить на одной карточке*'] = article_num[:-3]
+                    self.COLUMNS['Цвет товара*'] = self.COLORS[color] if color in self.COLORS.keys() else 'разноцветный'
+                    self.COLUMNS['Название цвета'] = color
+                    self.COLUMNS['Материал'] = material
+                    self.COLUMNS['Состав материала'] = material
+                    self.COLUMNS['Таблица размеров JSON'] = self.TABLE_OF_SIZES
+                    self.COLUMNS['Rich-контент JSON'] = rich
+                    try:
+                        self.COLUMNS['Российский размер*'] = self.SIZES[size.upper()]
+                    except:
+                        self.COLUMNS['Российский размер*'] = 'Bad size'  # Если размера нету в таблице размеров
+                    self.COLUMNS['Размер производителя'] = size
+                    self.COLUMNS["Страна-изготовитель"] = creator
+                elif self.settings[CATEGORIE]['type_pars'] == 'bags':
+                    self.COLUMNS['№'] = c
+                    self.COLUMNS['Артикул*'] = article
+                    self.COLUMNS['Название товара'] = name
+                    try:
+                        self.COLUMNS['Цена, руб.*'] = price
+                    except:
+                        self.COLUMNS['Цена, руб.*'] = 'Bad price'
+                    self.COLUMNS['Ссылка на главное фото*'] = main_photo
+                    self.COLUMNS['Ссылки на дополнительные фото'] = other_photo
+                    self.COLUMNS['Название модели (для объединения в одну карточку)*'] = article_num[:-3]
+                    self.COLUMNS['Цвет товара'] = COLORS[color] if color in COLORS else 'разноцветный'
+                    self.COLUMNS['Название цвета'] = color
+                    self.COLUMNS['Страна-изготовитель'] = creator
+                    self.COLUMNS['Материал'] = material
+                    self.COLUMNS['Таблица размеров JSON'] = self.TABLE_OF_SIZES
+                    self.COLUMNS['Rich-контент JSON'] = rich
+                elif self.settings[CATEGORIE]['type_pars'] == 'shoes':
+                    self.COLUMNS['№'] = c
+                    self.COLUMNS['Артикул*'] = article
+                    self.COLUMNS['Название товара'] = name
+                    try:
+                        self.COLUMNS['Цена, руб.*'] = price
+                    except:
+                        self.COLUMNS['Цена, руб.*'] = 'Bad price'
+                    self.COLUMNS['Ссылка на главное фото*'] = main_photo
+                    self.COLUMNS['Ссылки на дополнительные фото'] = other_photo
+                    self.COLUMNS['Объединить на одной карточке*'] = article_num[:-3]
+                    self.COLUMNS['Цвет товара*'] = COLORS[color] if color in COLORS else 'разноцветный'
+                    try:
+                        self.COLUMNS['Российский размер (обуви)*'] = self.SIZES[size.upper()]
+                    except:
+                        self.COLUMNS['Российский размер (обуви)*'] = 'Bad size'  # Если размера нету в таблице размеров
+                    self.COLUMNS['Размер производителя'] = size
+                    self.COLUMNS['Название цвета'] = color
+                    self.COLUMNS['Страна-изготовитель'] = creator
+                    self.COLUMNS['Материал'] = material
+                    self.COLUMNS['Внутренний материал'] = material
+                    self.COLUMNS['Материал подошвы'] = material
+                    self.COLUMNS['Таблица размеров JSON'] = self.TABLE_OF_SIZES
+                    self.COLUMNS['Rich-контент JSON'] = rich
 
                 self.result.append(self.COLUMNS.copy())
 
@@ -184,7 +227,7 @@ class Parser:
             'КУРС_EUR_RUB')) + (self.DELIVERY_PRICE * self.gPriceDict('КУРС_БЕЛ.РУБ_РУБ') * self.gPriceDict(
             'КУРС_EUR_БЕЛ.РУБ'))
         final_price = ((cost_price + self.gPriceDict('СРЕД_ЦЕН_ДОСТАВКИ')) * self.gPriceDict('НАЦЕНКА')) / (
-                    1 - self.gPriceDict('ПРОЦЕНТЫ_ОЗОН') - self.gPriceDict('ПРОЦЕНТЫ_НАЛОГ') - self.gPriceDict('ПРОЦЕНТЫ_ЭКВАЙРИНГ'))
+                    1 - self.OZON_PRICE_MARKUP - self.gPriceDict('ПРОЦЕНТЫ_НАЛОГ') - self.gPriceDict('ПРОЦЕНТЫ_ЭКВАЙРИНГ'))
 
         if final_price > 20000:
             final_price = (final_price // 1000 + 1) * 1000 - 10
@@ -224,7 +267,7 @@ class Parser:
                 pass
 
     def save(self, result):
-        wb = load_workbook(filename=f'{self.data[CATEGORIE]["folder_path"]}/example.xlsx')
+        wb = load_workbook(filename=f'{self.settings[CATEGORIE]["folder_path"]}/example.xlsx')
         ws = wb['Шаблон для поставщика']
         alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
         cols = []
@@ -254,9 +297,10 @@ class Parser:
 
     def load_settings(self):
         with open('settings.json', 'r', encoding='utf-8') as f:
-            self.data = json.load(f)
-        self.CATEGORIE_URL = self.data[CATEGORIE]['url']
-        self.DELIVERY_PRICE = int(self.data[CATEGORIE]["ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ"])
+            self.settings = json.load(f)
+        self.CATEGORIE_URL = self.settings[CATEGORIE]['url']
+        self.DELIVERY_PRICE = float(self.settings[CATEGORIE]["ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ"])
+        self.OZON_PRICE_MARKUP = float(self.settings[CATEGORIE]["ПРОЦЕНТЫ_ОЗОН"])
         self.COLUMNS = self.load_module('columns').COLUMNS
         self.RICH = self.load_module('rich').RICH
         self.SIZES = self.load_module('sizes').SIZES
@@ -265,7 +309,7 @@ class Parser:
         self.COLORS = COLORS
 
     def load_module(self, name):
-        spec = importlib.util.spec_from_file_location(name, self.data[CATEGORIE]['folder_path'] + '/' + name + '.py')
+        spec = importlib.util.spec_from_file_location(name, self.settings[CATEGORIE]['folder_path'] + '/' + name + '.py')
         foo = importlib.util.module_from_spec(spec)
         sys.modules[name] = foo
         spec.loader.exec_module(foo)

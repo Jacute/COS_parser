@@ -3,7 +3,22 @@
         "url":"https://www.cos.com/en_eur/women/t-shirts.html",
         "type_pars":"clothes",
         "folder_path":"/home/jacute/PycharmProjects/cos_parser/profiles/tshirts",
-        "ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"2"
+        "ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"2",
+        "ПРОЦЕНТЫ_ОЗОН":"0.18"
+    },
+    "bags":{
+        "url": "https://www.cos.com/en_eur/women/bags.html",
+        "type_pars": "bags",
+        "folder_path": "/home/jacute/PycharmProjects/cos_parser/profiles/bags",
+        "ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"2",
+        "ПРОЦЕНТЫ_ОЗОН":"0.18"
+    },
+    "shoes":{
+        "url": "https://www.cos.com/en_eur/women/shoes.html",
+        "type_pars": "shoes",
+        "folder_path": "/home/jacute/PycharmProjects/cos_parser/profiles/shoes",
+        "ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"2",
+        "ПРОЦЕНТЫ_ОЗОН":"0.18"
     }
 
 }
