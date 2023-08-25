@@ -124,7 +124,7 @@ class Parser:
             except:
                 creator = 'Турция'
 
-            eur_price = self.driver.find_element(By.CLASS_NAME, 'price').text.replace('€', '').replace(',', '.').strip()
+            eur_price = self.driver.find_element(By.CLASS_NAME, 'price').text.replace('€', '').replace(',', '.').strip().split()[0]
             price = self.get_price(eur_price)
 
             btn = self.driver.find_element(By.ID, 'pdp-dropdown-label')
