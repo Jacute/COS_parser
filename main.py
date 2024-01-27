@@ -58,9 +58,9 @@ class Parser:
 
             # options.add_argument('--disable-dev-shm-usage')
             # options.add_argument('--no-sandbox')
-
+            service = Service(os.path.abspath("chromedriver") if os.name == 'posix' else os.path.abspath("chromedriver.exe"))
             driver = webdriver.Chrome(
-                service=Service('chromedriver.exe'),
+                service=service,
                 options=options
             )
             driver.set_window_size(1920, 1080)
@@ -78,12 +78,17 @@ class Parser:
     def get_all_products(self):
         products = []
         # scroll page
-        while self.check_exists_by_xpath('//button[text()="Next Page"]'):
-            self.driver.execute_script(f"window.scrollTo(0, 10000);")
-            products.extend([i.get_attribute('href') for i in self.driver.find_elements(By.XPATH, '//a[@data-ticket]')])
-            btn = self.driver.find_element(By.XPATH, '//nav[@aria-label="Pagination"]/ul/li[last()]/button')
-            btn.click()
-            time.sleep(TIMEOUT)
+        try:
+            next_page = self.driver.find_element(By.CSS_SELECTOR, '.Pagination-module--nextButton__HwgXp')
+            while next_page.get_attribute('disabled') != 'true':
+                self.driver.execute_script(f"window.scrollTo(0, 10000);")
+                products.extend(
+                    [i.get_attribute('href') for i in self.driver.find_elements(By.XPATH, '//a[@data-ticket]')])
+                next_page.click()
+                time.sleep(TIMEOUT)
+                next_page = self.driver.find_element(By.CSS_SELECTOR, '.Pagination-module--nextButton__HwgXp')
+        except:
+            pass
         products.extend([i.get_attribute('href') for i in self.driver.find_elements(By.XPATH, '//a[@data-ticket]')])
 
         return list(set(products))
@@ -125,13 +130,13 @@ class Parser:
                 creator = 'Турция'
 
             eur_price = self.driver.find_element(By.CLASS_NAME, 'price').text.replace('€', '').replace(',', '.').strip().split()[0]
-            price = self.get_price(eur_price)
+            price = self.get_cos_price(eur_price)
 
-            btn = self.driver.find_element(By.ID, 'pdp-dropdown-label')
-            btn.click()
+            btn = self.driver.find_element(By.CSS_SELECTOR, '#pdp-dropdown-label')
+            self.driver.execute_script("arguments[0].click();", btn)
             color = btn.text.strip()
-            self.driver.execute_script("window.scrollTo(0, 10000);")
 
+            self.driver.execute_script("window.scrollTo(0, 10000);")
 
             article_num = re.search('[0-9]{5,}', self.driver.current_url)[0]
 
@@ -155,7 +160,7 @@ class Parser:
                 for i in self.translate(description).split('\n'):
                     text += i + '","'
                 rich = self.RICH.format(name, text, article_num)
-                if self.settings[CATEGORIE]['type_pars'] == 'clothes':
+                if self.PARSE_TYPE == 'clothes':
                     self.COLUMNS['№'] = c
                     self.COLUMNS['Артикул*'] = article
                     self.COLUMNS['Название товара'] = name
@@ -175,7 +180,7 @@ class Parser:
                         self.COLUMNS['Российский размер*'] = 'Bad size'  # Если размера нету в таблице размеров
                     self.COLUMNS['Размер производителя'] = size
                     self.COLUMNS["Страна-изготовитель"] = creator
-                elif self.settings[CATEGORIE]['type_pars'] == 'bags':
+                elif self.PARSE_TYPE == 'bags':
                     self.COLUMNS['№'] = c
                     self.COLUMNS['Артикул*'] = article
                     self.COLUMNS['Название товара'] = name
@@ -192,7 +197,7 @@ class Parser:
                     self.COLUMNS['Материал'] = material
                     self.COLUMNS['Таблица размеров JSON'] = self.TABLE_OF_SIZES
                     self.COLUMNS['Rich-контент JSON'] = rich
-                elif self.settings[CATEGORIE]['type_pars'] == 'shoes':
+                elif self.PARSE_TYPE == 'shoes':
                     self.COLUMNS['№'] = c
                     self.COLUMNS['Артикул*'] = article
                     self.COLUMNS['Название товара'] = name
@@ -222,22 +227,14 @@ class Parser:
     def gPriceDict(self, key):
         return float(PRICE_TABLE[key])
 
-    def get_price(self, eur_price):
+    def get_cos_price(self, eur_price):
         cost_price = (float(eur_price) * self.gPriceDict("КОЭФ_КОНВЕРТАЦИИ") * self.gPriceDict(
             'КУРС_EUR_RUB')) + (self.DELIVERY_PRICE * self.gPriceDict('КУРС_БЕЛ.РУБ_РУБ') * self.gPriceDict(
             'КУРС_EUR_БЕЛ.РУБ'))
-        final_price = ((cost_price + self.gPriceDict('СРЕД_ЦЕН_ДОСТАВКИ')) * self.gPriceDict('НАЦЕНКА')) / (
-                    1 - self.OZON_PRICE_MARKUP - self.gPriceDict('ПРОЦЕНТЫ_НАЛОГ') - self.gPriceDict('ПРОЦЕНТЫ_ЭКВАЙРИНГ'))
+        final_price = (cost_price + self.gPriceDict('СРЕД_ЦЕН_ДОСТАВКИ')) / (
+                    1 - self.gPriceDict('НАЦЕНКА') - self.OZON_PRICE_MARKUP - self.gPriceDict('ПРОЦЕНТЫ_НАЛОГ') - self.gPriceDict('ПРОЦЕНТЫ_ЭКВАЙРИНГ'))
 
-        if final_price > 20000:
-            final_price = (final_price // 1000 + 1) * 1000 - 10
-        elif final_price > 10000:
-            if final_price % 1000 >= 500:
-                final_price = (final_price // 1000) * 1000 + 990
-            else:
-                final_price = (final_price // 1000) * 1000 + 490
-        else:
-            final_price = (final_price // 100 + 1) * 100 - 10
+        final_price = (final_price // 100 + 1) * 100 - 10
         return final_price
 
     def check_exists_by_xpath(self, xpath):
@@ -268,7 +265,7 @@ class Parser:
 
     def save(self, result):
         wb = load_workbook(filename=f'{self.settings[CATEGORIE]["folder_path"]}/example.xlsx')
-        ws = wb['Шаблон для поставщика']
+        ws = wb['Шаблон']
         alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
         cols = []
         for col in alphabet:
@@ -299,6 +296,7 @@ class Parser:
         with open('settings.json', 'r', encoding='utf-8') as f:
             self.settings = json.load(f)
         self.CATEGORIE_URL = self.settings[CATEGORIE]['url']
+        self.PARSE_TYPE = self.settings[CATEGORIE]['type_pars']
         self.DELIVERY_PRICE = float(self.settings[CATEGORIE]["ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ"])
         self.OZON_PRICE_MARKUP = float(self.settings[CATEGORIE]["ПРОЦЕНТЫ_ОЗОН"])
         self.COLUMNS = self.load_module('columns').COLUMNS

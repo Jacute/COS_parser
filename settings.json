@@ -1,24 +1,149 @@
 {
     "tshirts":{
-        "url":"https://www.cos.com/en_eur/women/t-shirts.html",
+        "url":"https://www.cos.com/en_eur/women/t-shirts.html?sort=newestProduct",
         "type_pars":"clothes",
-        "folder_path":"/home/jacute/PycharmProjects/cos_parser/profiles/tshirts",
-        "ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"2",
-        "ПРОЦЕНТЫ_ОЗОН":"0.18"
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\tshirts",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"2",
+		"ПРОЦЕНТЫ_ОЗОН":"0.18"
     },
-    "bags":{
-        "url": "https://www.cos.com/en_eur/women/bags.html",
-        "type_pars": "bags",
-        "folder_path": "/home/jacute/PycharmProjects/cos_parser/profiles/bags",
-        "ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"2",
-        "ПРОЦЕНТЫ_ОЗОН":"0.18"
+	"tops":{
+        "url":"https://www.cos.com/en_eur/women/t-shirts.html?sort=newestProduct",
+        "type_pars":"clothes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\tshirts",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"2",
+		"ПРОЦЕНТЫ_ОЗОН":"0.18"
     },
-    "shoes":{
-        "url": "https://www.cos.com/en_eur/women/shoes.html",
-        "type_pars": "shoes",
-        "folder_path": "/home/jacute/PycharmProjects/cos_parser/profiles/shoes",
-        "ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"2",
-        "ПРОЦЕНТЫ_ОЗОН":"0.18"
+	
+    "dress":{
+        "url":"https://www.cos.com/en_eur/women/dresses.html?sort=newestProduct",
+        "type_pars":"clothes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\dress",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"4",
+		"ПРОЦЕНТЫ_ОЗОН":"0.18"
+    },
+	"jumpsuits":{
+        "url":"https://www.cos.com/en_eur/women/dresses/jumpsuits.html",
+        "type_pars":"clothes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\jumpsuits",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"5",
+		"ПРОЦЕНТЫ_ОЗОН":"0.18"
+    },
+	"брюки_женские":{
+        "url":"https://www.cos.com/en_eur/women/trousers.html?sort=newestProduct",
+        "type_pars":"clothes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\брюки_женские",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"5",
+		"ПРОЦЕНТЫ_ОЗОН":"0.18"
+    },
+	"джинсы_женские":{
+        "url":"https://www.cos.com/en_eur/women/jeans.html",
+        "type_pars":"clothes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\джинсы_женские",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"5",
+		"ПРОЦЕНТЫ_ОЗОН":"0.18"
+    },
+	"куртка_женская":{
+        "url":"https://www.cos.com/en_eur/women/coats-and-jackets.html?themeName=Overshirt",
+        "type_pars":"clothes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\куртка_женская",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"5",
+		"ПРОЦЕНТЫ_ОЗОН":"0.18"
+    },
+	"пальто_женское":{
+        "url":"https://www.cos.com/en_eur/women/coats-and-jackets.html?themeName=Trenchcoat",
+        "type_pars":"clothes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\пальто_женское",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"5",
+		"ПРОЦЕНТЫ_ОЗОН":"0.18"
+    },
+	"пуховик_женский":{
+        "url":"https://www.cos.com/en_eur/women/coats-and-jackets/coats.html?sort=newestProduct",
+        "type_pars":"clothes",
+        "folder_path":"/home/jacute/PycharmProjects/cos_parser/profiles/пуховик_женский",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"5",
+		"ПРОЦЕНТЫ_ОЗОН":"0.18"
+    },
+	"пиджак_женский":{
+        "url":"https://www.cos.com/en_eur/women/tailoring/blazers.html",
+        "type_pars":"clothes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\пиджак_женский",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"5",
+		"ПРОЦЕНТЫ_ОЗОН":"0.18"
+    },
+	"юбка_женская":{
+        "url":"https://www.cos.com/en_eur/women/skirts.html",
+        "type_pars":"clothes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\юбка_женская",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"4",
+		"ПРОЦЕНТЫ_ОЗОН":"0.18"
+    },
+	"рубашка_женская":{
+        "url":"https://www.cos.com/en_eur/women/shirts.html",
+        "type_pars":"clothes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\рубашка_женская",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"4",
+		"ПРОЦЕНТЫ_ОЗОН":"0.18"
+    },
+	"кардиган_женский":{
+        "url":"https://www.cos.com/en_eur/women/knitwear/cardigans.html",
+        "type_pars":"clothes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\кардиган_женский",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"4",
+		"ПРОЦЕНТЫ_ОЗОН":"0.18"
+    },
+	"knitwear":{
+        "url":"https://www.cos.com/en_eur/women/knitwear.html?sort=newestProduct",
+        "type_pars":"clothes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\knitwear",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"4",
+		"ПРОЦЕНТЫ_ОЗОН":"0.18"
+    },
+	"футболка_мужская":{
+        "url":"https://www.cos.com/en_eur/men/t-shirts.html",
+        "type_pars":"clothes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\футболка_мужская",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"4",
+		"ПРОЦЕНТЫ_ОЗОН":"0.18"
+    },
+	
+	
+	
+	
+	"flat_shoes":{
+        "url":"https://www.cos.com/en_eur/women/shoes/flats.html",
+        "type_pars":"shoes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\flat_shoes",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"5",
+		"ПРОЦЕНТЫ_ОЗОН":"0.17"
+    },
+	"heels_shoes":{
+        "url":"https://www.cos.com/en_eur/women/shoes/heels.html",
+        "type_pars":"shoes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\heels_shoes",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"5",
+		"ПРОЦЕНТЫ_ОЗОН":"0.17"
+    },
+	"sandals_shoes":{
+        "url":"https://www.cos.com/en_eur/women/shoes/sandals.html",
+        "type_pars":"shoes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\sandals_shoes",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"5",
+		"ПРОЦЕНТЫ_ОЗОН":"0.17"
+    },
+	"сапоги_женские":{
+        "url":"https://www.cos.com/en_eur/women/shoes/boots.html",
+        "type_pars":"shoes",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\сапоги_женские",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"5",
+		"ПРОЦЕНТЫ_ОЗОН":"0.17"
+    },
+	
+	"сумка":{
+        "url":"https://www.cos.com/en_eur/women/bags.html",
+        "type_pars":"bags",
+        "folder_path":"C:\\YandexDisk\\COS_parser\\profiles\\сумка",
+		"ЦЕНА_ДОСТАВКИ_В_КАТЕГОРИИ":"5",
+		"ПРОЦЕНТЫ_ОЗОН":"0.19"
     }
 
 }
